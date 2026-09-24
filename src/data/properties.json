@@ -1,0 +1,37 @@
+[
+  {
+    "id": "property_1001",
+    "title": "Modern apartment in Stockholm",
+    "description": "A bright apartment close to restaurants and public transport.",
+    "city": "Stockholm",
+    "country": "Sweden",
+    "price_per_night": 1290,
+    "max_guests": 2
+  },
+  {
+    "id": "property_1002",
+    "title": "Cozy cabin near the forest",
+    "description": "A quiet cabin for guests who want nature and calm evenings.",
+    "city": "Falun",
+    "country": "Sweden",
+    "price_per_night": 850,
+    "max_guests": 4
+  },
+  {
+    "id": "property_1003",
+    "title": "Seaside house in Gothenburg",
+    "description": "A comfortable house with walking distance to the sea.",
+    "city": "Gothenburg",
+    "country": "Sweden",
+    "price_per_night": 1790,
+    "max_guests": 6
+  },
+  {
+    "title": "STF Grövelsjön",
+    "description": "Perfekt vandringsstuga",
+    "location": "Grövelsjön",
+    "price_per_night": 499,
+    "max_guests": 4,
+    "id": "property_1007"
+  }
+]
