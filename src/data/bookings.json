@@ -1,0 +1,32 @@
+[
+  {
+    "booking_id": "bkg_001",
+    "property_id": "prop_123",
+    "guest_name": "Anna Andersson",
+    "guest_email": "anna.andersson@example.com",
+    "check_in": "2026-10-15",
+    "check_out": "2026-10-18",
+    "guests": 2,
+    "status": "confirmed"
+  },
+  {
+    "booking_id": "bkg_002",
+    "property_id": "prop_456",
+    "guest_name": "Erik Johansson",
+    "guest_email": "erik.johansson@example.com",
+    "check_in": "2026-11-02",
+    "check_out": "2026-11-05",
+    "guests": 4,
+    "status": "pending"
+  },
+  {
+    "booking_id": "bkg_003",
+    "property_id": "prop_789",
+    "guest_name": "Sara Nilsson",
+    "guest_email": "sara.nilsson@example.com",
+    "check_in": "2026-12-20",
+    "check_out": "2026-12-27",
+    "guests": 3,
+    "status": "cancelled"
+  }
+]

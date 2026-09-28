@@ -2,7 +2,6 @@ import * as z from 'zod'
 import {zValidator} from '@hono/zod-validator'
 
 const propertySchema = z.strictObject({
-  id: z.string().optional(),
   title: z.string().min(2, 'Title must be at least 2 characters long'),
   description: z.string().min(5, 'Description must be at least 5 characters long'),
   location: z.string().min(3, 'Location must be at least 3 characters long'),

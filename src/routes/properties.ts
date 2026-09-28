@@ -1,33 +1,47 @@
 import {Hono} from 'hono'
-import fs from 'fs'
+import { supabase } from '../lib/supabase.js'
 import { propertyValidator, propertyPartialValidator } from '../validators/propertyValidator.js'
+import propertyParamValidator from '../validators/propertyParamValidator.js'
+import type { PostgrestSingleResponse } from '@supabase/supabase-js'
 
 const properties = new Hono()
 
-const fileContent = fs.readFileSync('src/data/properties.json', 'utf-8')
-const dummyProperties: Property[] = JSON.parse(fileContent)
-const saveProperties = () => {
-  fs.writeFileSync('src/data/properties.json', JSON.stringify(dummyProperties, null, 2))
-}
 // GET
 
-properties.get('/', (c) => {
-  return c.json(dummyProperties)
+properties.get('/', async (c) => {
+  try {
+    const {data, error} = await supabase
+    .from('properties')
+    .select('*')
+    .overrideTypes<Property[], {merge: false}>()
+    if (!error) {
+      return c.json(data)
+    }
+    throw error
+
+  } catch (error) {
+    console.warn('Error in fetching from SB database')
+    return c.json([])
+  }
 })
 
 // GET BY ID
 
-properties.get('/:id', (c) => {
-  const { id } = c.req.param()
+properties.get('/:id', propertyParamValidator, async (c) => {
+  const { id } = c.req.valid('param')
   try {
-
-      const property = dummyProperties.find(p => p.id === id)
-      if (!property) {
-        return c.json({ error: 'Property not found' }, 404)
+      const {data, error}: PostgrestSingleResponse<Property> = await supabase
+      .from('properties')
+      .select('*')
+      .eq('property_id', id)
+      .single()
+      if (!error) {
+        return c.json(data)
       }
-      return c.json(property)
+      throw error
   } catch (error) {
-    return c.json({ error: 'An error occurred while fetching the property' }, 500)
+      console.error(error)
+      return c.json({error: 'An error occurred while fetching data from sb database'}, 500)
   }
 })
 
@@ -36,32 +50,41 @@ properties.get('/:id', (c) => {
 properties.post('/', propertyValidator, async (c) => {
   try {
     const body = c.req.valid('json')
-    const newProperty: Property = {
-      ...body, 
-      id: `property_${1000 + dummyProperties.length + 1}`
+    const {data, error}: PostgrestSingleResponse<Property> = await supabase
+    .from('properties')
+    .insert(body)
+    .select()
+    .single()
 
+    if (!error) {
+      return c.json(data)
     }
-    dummyProperties.push(newProperty)
-    saveProperties()
-    return c.json(newProperty, 201)
+
+    throw error
   } catch (error) {
+    console.error(error)
     return c.json({ error: 'An error occurred while creating the property' }, 500)
   }
 })
 
 // PATCH
 
-properties.patch('/:id', propertyPartialValidator, async (c) => {
-  const { id } = c.req.param()
+properties.patch('/:id', propertyPartialValidator, propertyParamValidator, async (c) => {
+  const { id } = c.req.valid('param')
+  const body = c.req.valid('json')
   try {
-    const index = dummyProperties.findIndex(p => p.id === id)
-    if (index === -1) {
-      return c.json({ error: 'Property not found' }, 404)
+    const {data, error}: PostgrestSingleResponse<Property> = await supabase
+    .from('properties')
+    .update(body)
+    .eq('property_id', id)
+    .select()
+    .single()
+
+    if (!error) {
+      return c.json(data)
     }
-    const updatedProperty = c.req.valid('json')
-    dummyProperties[index] = { ...dummyProperties[index], ...updatedProperty }
-    saveProperties()
-    return c.json(dummyProperties[index])
+
+    throw error
   } catch (error) {
     return c.json({ error: 'An error occurred while updating the property' }, 500)
   }
@@ -69,17 +92,25 @@ properties.patch('/:id', propertyPartialValidator, async (c) => {
 
 // DELETE
 
-properties.delete('/:id', (c) => {
-    const { id } = c.req.param()
+properties.delete('/:id', propertyParamValidator, async (c) => {
+    const { id } = c.req.valid('param')
     try {
-        const index = dummyProperties.findIndex(p => p.id === id)
-        if (index === -1) {
-            return c.json({ error: 'Property not found' }, 404)
-        }
-        dummyProperties.splice(index, 1)
-        saveProperties()
-        return c.json({ message: `Property ${id} deleted successfully` })
+      const {data, error}: PostgrestSingleResponse<Property> = await supabase
+      .from('properties')
+      .delete()
+      .eq('property_id', id)
+      .select()
+      .single()
+
+      if (!error){
+        return c.json({message: `Property ${id} deleted successfully`} ,200)
+      }
+      if (!data) {
+        return c.json({message: 'Property not found'}, 404)
+      }
+      throw error
     } catch (error) {
+      console.error(error)
         return c.json({ error: 'An error occurred while deleting the property' }, 500)
     }
 })
