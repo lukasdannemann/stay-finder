@@ -1,5 +1,4 @@
 interface NewBooking {
-  booking_id?: string;
   property_id: string;
   guest_name: string;
   guest_email: string;
@@ -12,4 +11,5 @@ interface NewBooking {
 interface Booking extends NewBooking {
   booking_id: string;
   status: "pending" | "confirmed" | "cancelled";
+  created_at: string;
 }

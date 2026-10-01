@@ -1,117 +1,143 @@
 import {Hono} from 'hono'
-import { supabase } from '../lib/supabase.js'
-import { propertyValidator, propertyPartialValidator } from '../validators/propertyValidator.js'
+import { propertyValidator } from '../validators/propertyValidator.js'
 import propertyParamValidator from '../validators/propertyParamValidator.js'
-import type { PostgrestSingleResponse } from '@supabase/supabase-js'
+import propertyQueryValidator from '../validators/propertyQueryValidator.js'
+import * as db from '../database/property.js'
+import type { NewProperty } from '../types/property.js'
 
 const properties = new Hono()
 
 // GET
 
-properties.get('/', async (c) => {
-  try {
-    const {data, error} = await supabase
-    .from('properties')
-    .select('*')
-    .overrideTypes<Property[], {merge: false}>()
-    if (!error) {
-      return c.json(data)
-    }
-    throw error
+properties.get("/", propertyQueryValidator, async (c) => {
+const query = c.req.valid("query");
 
+  try {
+    const properties = await db.getProperties(query);
+
+    return c.json(properties);
   } catch (error) {
-    console.warn('Error in fetching from SB database')
-    return c.json([])
+    return c.json(
+      {
+        data: [],
+        count: 0,
+        offset: query.offset,
+        limit: query.limit
+      },
+      500
+    );
   }
-})
+});
 
 // GET BY ID
 
-properties.get('/:id', propertyParamValidator, async (c) => {
-  const { id } = c.req.valid('param')
+properties.get("/:id", propertyParamValidator, async (c) => {
   try {
-      const {data, error}: PostgrestSingleResponse<Property> = await supabase
-      .from('properties')
-      .select('*')
-      .eq('property_id', id)
-      .single()
-      if (!error) {
-        return c.json(data)
-      }
-      throw error
+    const { id } = c.req.valid("param");
+
+    const property = await db.getPropertyById(id);
+
+    if (!property) {
+      return c.json(
+        {
+          error: "Property not found"
+        },
+        404
+      );
+    }
+
+    return c.json(property);
   } catch (error) {
-      console.error(error)
-      return c.json({error: 'An error occurred while fetching data from sb database'}, 500)
+    return c.json(
+      {
+        error: "Failed to fetch property"
+      },
+      500
+    );
   }
-})
+});
 
 // POST
 
-properties.post('/', propertyValidator, async (c) => {
+properties.post("/", propertyValidator, async (c) => {
   try {
-    const body = c.req.valid('json')
-    const {data, error}: PostgrestSingleResponse<Property> = await supabase
-    .from('properties')
-    .insert(body)
-    .select()
-    .single()
+    const newProperty: NewProperty = c.req.valid("json");
 
-    if (!error) {
-      return c.json(data)
-    }
+    const property = await db.createProperty(newProperty);
 
-    throw error
+    return c.json(property, 201);
   } catch (error) {
-    console.error(error)
-    return c.json({ error: 'An error occurred while creating the property' }, 500)
+    return c.json(
+      {
+        error: "Failed to create property"
+      },
+      400
+    );
   }
-})
+});
 
 // PATCH
 
-properties.patch('/:id', propertyPartialValidator, propertyParamValidator, async (c) => {
-  const { id } = c.req.valid('param')
-  const body = c.req.valid('json')
-  try {
-    const {data, error}: PostgrestSingleResponse<Property> = await supabase
-    .from('properties')
-    .update(body)
-    .eq('property_id', id)
-    .select()
-    .single()
+properties.put(
+  "/:id",
+  propertyParamValidator,
+  propertyValidator,
+  async (c) => {
+    try {
+      const { id } = c.req.valid("param");
+      const body: NewProperty = c.req.valid("json");
 
-    if (!error) {
-      return c.json(data)
+      const updatedProperty = await db.updateProperty(id, body);
+
+      if (!updatedProperty) {
+        return c.json(
+          {
+            error: "Property not found"
+          },
+          404
+        );
+      }
+
+      return c.json(updatedProperty);
+    } catch (error) {
+      return c.json(
+        {
+          error: "Failed to update property"
+        },
+        400
+      );
     }
-
-    throw error
-  } catch (error) {
-    return c.json({ error: 'An error occurred while updating the property' }, 500)
   }
-})
+);
 
 // DELETE
 
-properties.delete('/:id', propertyParamValidator, async (c) => {
-    const { id } = c.req.valid('param')
-    try {
-      const {data, error}: PostgrestSingleResponse<Property> = await supabase
-      .from('properties')
-      .delete()
-      .eq('property_id', id)
-      .select()
-      .single()
+properties.delete("/:id", propertyParamValidator, async (c) => {
+  try {
+    const { id } = c.req.valid("param");
 
-      if (!error){
-        return c.json({message: `Property ${id} deleted successfully`} ,200)
-      }
-      if (!data) {
-        return c.json({message: 'Property not found'}, 404)
-      }
-      throw error
-    } catch (error) {
-      console.error(error)
-        return c.json({ error: 'An error occurred while deleting the property' }, 500)
+    const deletedProperty = await db.deleteProperty(id);
+
+    if (!deletedProperty) {
+      return c.json(
+        {
+          error: "Property not found"
+        },
+        404
+      );
     }
-})
+
+    return c.json({
+      message: "Property deleted",
+      property: deletedProperty
+    });
+  } catch (error) {
+    return c.json(
+      {
+        error: "Failed to delete property"
+      },
+      500
+    );
+  }
+});
 export default properties
