@@ -35,4 +35,5 @@ export type PropertyListQuery = {
   kind?: PropertyKind;
   sort_by: PropertySortBy;
   sort_order: SortOrder;
+  image_url?: string | null;
 };

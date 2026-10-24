@@ -9,6 +9,7 @@ const propertySchema = z.strictObject({
   price_per_night: z.number().min(0, 'Price per night must be a positive number'),
   max_guests: z.number().min(1, 'Max guests must be at least 1'),
   kind: z.enum(PROPERTY_KINDS),
+  image_url: z.url('Image must be a valid URL').nullable().optional(),
 })
 
 const handleError = (result: any, c: any) => {
