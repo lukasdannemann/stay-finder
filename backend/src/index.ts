@@ -5,12 +5,14 @@ import properties from './routes/properties.js'
 import bookings from './routes/bookings.js'
 import { optionalAuth } from './middleware/auth.js'
 import auth from './routes/auth.js'
+import { cors } from '@hono/cors'
 
 const app = new Hono()
 
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
+app.use('*', cors({
+  origin: env.frontendUrl,
+  credentials: true,
+}))
 
 app.use('*', optionalAuth)
 
