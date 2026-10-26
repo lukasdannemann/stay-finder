@@ -4,6 +4,7 @@ import propertyParamValidator from '../validators/propertyParamValidator.js'
 import propertyQueryValidator from '../validators/propertyQueryValidator.js'
 import * as db from '../database/property.js'
 import type { NewProperty } from '../types/property.js'
+import { requireAuth } from '../middleware/auth.js';
 
 const properties = new Hono()
 
@@ -13,7 +14,7 @@ properties.get("/", propertyQueryValidator, async (c) => {
 const query = c.req.valid("query");
 
   try {
-    const properties = await db.getProperties(query);
+    const properties = await db.getProperties(c.get("supabase"), query);
 
     return c.json(properties);
   } catch (error) {
@@ -35,7 +36,7 @@ properties.get("/:id", propertyParamValidator, async (c) => {
   try {
     const { id } = c.req.valid("param");
 
-    const property = await db.getPropertyById(id);
+    const property = await db.getPropertyById(c.get("supabase"), id);
 
     if (!property) {
       return c.json(
@@ -59,11 +60,11 @@ properties.get("/:id", propertyParamValidator, async (c) => {
 
 // POST
 
-properties.post("/", propertyValidator, async (c) => {
+properties.post("/", requireAuth,propertyValidator, async (c) => {
   try {
     const newProperty: NewProperty = c.req.valid("json");
 
-    const property = await db.createProperty(newProperty);
+    const property = await db.createProperty(c.get("supabase"), newProperty);
 
     return c.json(property, 201);
   } catch (error) {
@@ -80,6 +81,7 @@ properties.post("/", propertyValidator, async (c) => {
 
 properties.put(
   "/:id",
+  requireAuth,
   propertyParamValidator,
   propertyValidator,
   async (c) => {
@@ -87,7 +89,7 @@ properties.put(
       const { id } = c.req.valid("param");
       const body: NewProperty = c.req.valid("json");
 
-      const updatedProperty = await db.updateProperty(id, body);
+      const updatedProperty = await db.updateProperty(c.get("supabase"), id, body);
 
       if (!updatedProperty) {
         return c.json(
@@ -112,11 +114,11 @@ properties.put(
 
 // DELETE
 
-properties.delete("/:id", propertyParamValidator, async (c) => {
+properties.delete("/:id", requireAuth, propertyParamValidator, async (c) => {
   try {
     const { id } = c.req.valid("param");
 
-    const deletedProperty = await db.deleteProperty(id);
+    const deletedProperty = await db.deleteProperty(c.get("supabase"), id);
 
     if (!deletedProperty) {
       return c.json(

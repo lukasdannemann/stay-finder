@@ -5,8 +5,7 @@ import { createServerClient } from "@supabase/ssr";
 import type { User } from "@supabase/supabase-js";
 import { env } from "../env.js";
 import { supabaseKey, supabaseUrl } from "../lib/supabase.js";
-
-type AppSupabaseClient = ReturnType<typeof createSupabaseForRequest>;
+import type { AppSupabaseClient } from "../types/supabase.js";
 
 declare module "hono" {
   interface ContextVariableMap {

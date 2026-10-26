@@ -8,7 +8,7 @@ export interface NewProperty {
   location: string;
   price_per_night: number;
   kind: PropertyKind;
-  max_guests: number;
+  max_guests?: number;
   image_url?: string | null;
 }
 
