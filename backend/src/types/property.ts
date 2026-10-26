@@ -9,6 +9,7 @@ export interface NewProperty {
   price_per_night: number;
   kind: PropertyKind;
   max_guests: number;
+  image_url?: string | null;
 }
 
 export interface Property extends NewProperty {
@@ -35,5 +36,4 @@ export type PropertyListQuery = {
   kind?: PropertyKind;
   sort_by: PropertySortBy;
   sort_order: SortOrder;
-  image_url?: string | null;
 };
