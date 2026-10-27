@@ -7,11 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const KIND_LABELS: Record<PropertyKind, string> = {
-  apartment: "Lägenhet",
-  house: "Hus",
-  cabin: "Stuga",
-};
+import { KIND_LABELS } from '@/lib/labels'
 
 type PropertyCardProps = {
   property: Property;

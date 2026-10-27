@@ -37,9 +37,9 @@ export async function getPropertyById(id: string): Promise<Property | null> {
     cache: "no-store"
   });
 
-  if (response.status === 404) {
-    return null;
-  }
+    if (response.status === 404 || response.status === 400) {
+  return null;
+}
 
   if (!response.ok) {
     throw new Error("Failed to fetch property");

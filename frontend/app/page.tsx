@@ -33,7 +33,7 @@ const filters: PropertyFilters = {
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-8">
       <FilterBar key={JSON.stringify(values)} values={values} />
-      <p className="mb-6 text-sm text-zinc-500">{count} boenden</p>
+      <p className="mb-6 text-sm">{count} boenden hittades</p>
 
       {properties.length === 0 ? (
         <p>Inga boenden hittades.</p>

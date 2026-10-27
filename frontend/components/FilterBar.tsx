@@ -15,6 +15,14 @@ type FilterBarProps = {
   values: FilterFormValues;
 };
 
+const PRICE_ITEMS = [
+  { value: null, label: "Alla priser" },
+  ...[500, 750, 1000, 1500, 2000, 3000].map((n) => ({
+    value: String(n),
+    label: `${n} kr`,
+  })),
+];
+
 const GUEST_ITEMS = [
   { value: null, label: "Alla" },
   ...[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => ({
@@ -47,13 +55,22 @@ export default function FilterBar({ values }: FilterBarProps) {
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="max_price">Maxpris / natt</Label>
-        <Input
-          id="max_price"
+        <Select
           name="max_price"
-          type="number"
-          min="1"
-          defaultValue={values.max_price}
-        />
+          items={PRICE_ITEMS}
+          defaultValue={values.max_price ?? null}
+        >
+          <SelectTrigger id="max_price" className="w-28">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {PRICE_ITEMS.map((item) => (
+              <SelectItem key={item.label} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="flex flex-col gap-2">
