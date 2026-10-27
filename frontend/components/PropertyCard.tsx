@@ -1,4 +1,11 @@
 import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const KIND_LABELS: Record<PropertyKind, string> = {
   apartment: "Lägenhet",
@@ -6,38 +13,51 @@ const KIND_LABELS: Record<PropertyKind, string> = {
   cabin: "Stuga",
 };
 
-export default function PropertyCard({ property }: { property: Property }) {
+type PropertyCardProps = {
+  property: Property;
+};
+
+export default function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Link
       href={`/properties/${property.property_id}`}
-      className="block overflow-hidden rounded-xl border border-zinc-200 transition hover:shadow-md"
+      className="block h-full rounded-xl transition hover:shadow-md"
     >
-      <div className="aspect-[4/3] bg-zinc-100">
-        {property.image_url ? (
-          <img
-            src={property.image_url}
-            alt={property.title}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-sm text-zinc-400">
-            Ingen bild
-          </div>
-        )}
-      </div>
-
-      <div className="space-y-1 p-4">
-        <div className="flex items-start justify-between gap-2">
-          <h2 className="font-semibold">{property.title}</h2>
-          <p className="whitespace-nowrap">
-            <span className="font-semibold">{property.price_per_night} kr</span> / natt
-          </p>
+      <Card className="h-full pt-0">
+        <div className="aspect-[4/3] shrink-0 overflow-hidden bg-muted">
+          {" "}
+          {property.image_url ? (
+            <img
+              src={property.image_url}
+              alt={property.title}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-muted-foreground">
+              Ingen bild
+            </div>
+          )}
         </div>
-        <p className="text-sm text-zinc-500">{property.location}</p>
-        <p className="text-sm text-zinc-500">
-          {KIND_LABELS[property.kind]} · upp till {property.max_guests} gäster
-        </p>
-      </div>
+
+        <CardHeader>
+          <CardTitle>
+            <h2 className="truncate">{property.title}</h2>  
+          </CardTitle>
+          <CardDescription className="truncate">
+            {property.location}
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="flex items-center justify-between gap-2 text-muted-foreground">
+          <span className="truncate">
+            {KIND_LABELS[property.kind]} · upp till {property.max_guests} gäster
+          </span>
+          <span className="whitespace-nowrap text-foreground">
+            <span className="font-semibold">{property.price_per_night} kr</span>{" "}
+            / natt
+          </span>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

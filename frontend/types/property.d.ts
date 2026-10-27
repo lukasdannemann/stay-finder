@@ -19,3 +19,18 @@ type PaginatedListResponse<T> = {
   offset: number;
   limit: number;
 };
+
+type PropertyFilters = {
+  location?: string;
+  max_price?: string;
+  max_guests?: string;
+  sort_by?: string;
+  sort_order?: string;
+};
+
+type FilterFormValues = {
+  location?: string;
+  max_price?: string;
+  max_guests?: string;
+  sort?: string;
+};

@@ -10,10 +10,18 @@ function getApiBaseUrl(): string {
 
 // GET
 
-export async function getProperties(): Promise<PaginatedListResponse<Property>> {
-    const response = await fetch(`${getApiBaseUrl()}/properties`, {
-    cache: "no-store"
-  });
+export async function getProperties(filters: PropertyFilters = {}): Promise<PaginatedListResponse<Property>> {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(filters)) {
+        if (value) {
+            params.set(key, value);
+        }
+    }
+
+    const query = params.toString();
+    const url = `${getApiBaseUrl()}/properties${query ? `?${query}` : ""}`;
+
+    const response = await fetch(url, {cache: "no-store"});
 
   if (!response.ok) {
     throw new Error("Failed to fetch properties");
