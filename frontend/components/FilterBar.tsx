@@ -41,7 +41,7 @@ export default function FilterBar({ values }: FilterBarProps) {
   return (
     <Form
       action="/"
-      className="mb-8 flex flex-wrap items-end gap-4 rounded-xl border p-4"
+      className="mb-8 flex flex-wrap items-end gap-4 rounded-xl border bg-card p-4 shadow-sm"
     >
       <div className="flex flex-col gap-2">
         <Label htmlFor="location">Plats</Label>

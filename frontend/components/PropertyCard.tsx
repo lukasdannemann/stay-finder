@@ -17,9 +17,9 @@ export default function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Link
       href={`/properties/${property.property_id}`}
-      className="block h-full rounded-xl transition hover:shadow-md"
+      className="group block h-full rounded-xl"
     >
-      <Card className="h-full pt-0">
+      <Card className="h-full pt-0 shadow-sm transition duration-200 group-hover:-translate-y-0.5 group-hover:shadow-lg">
         <div className="aspect-[4/3] shrink-0 overflow-hidden bg-muted">
           {" "}
           {property.image_url ? (

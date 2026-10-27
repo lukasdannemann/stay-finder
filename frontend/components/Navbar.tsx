@@ -15,7 +15,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="border-b">
+    <header className="border-b bg-card shadow-sm">
       <nav className="mx-auto flex w-full items-center justify-between px-6 py-3 sm:px-20">
         <Link href="/" className="text-lg font-semibold">
           StayFinder

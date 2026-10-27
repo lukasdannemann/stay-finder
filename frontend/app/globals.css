@@ -48,73 +48,148 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+
+/* Färgpalett: gör klasser som bg-willow-green-50 och text-sunflower-gold-800 tillgängliga */
+@theme {
+  --color-frosted-mint-50: #e9fde7;
+  --color-frosted-mint-100: #d4fccf;
+  --color-frosted-mint-200: #a8f99f;
+  --color-frosted-mint-300: #7df66f;
+  --color-frosted-mint-400: #51f33f;
+  --color-frosted-mint-500: #26f00f;
+  --color-frosted-mint-600: #1ec00c;
+  --color-frosted-mint-700: #179009;
+  --color-frosted-mint-800: #0f6006;
+  --color-frosted-mint-900: #083003;
+  --color-frosted-mint-950: #052202;
+
+  --color-willow-green-50: #eef7ed;
+  --color-willow-green-100: #dcefdc;
+  --color-willow-green-200: #b9e0b8;
+  --color-willow-green-300: #97d095;
+  --color-willow-green-400: #74c171;
+  --color-willow-green-500: #51b14e;
+  --color-willow-green-600: #418e3e;
+  --color-willow-green-700: #316a2f;
+  --color-willow-green-800: #20471f;
+  --color-willow-green-900: #102310;
+  --color-willow-green-950: #0b190b;
+
+  --color-deep-teal-50: #f1f4f4;
+  --color-deep-teal-100: #e2e9e8;
+  --color-deep-teal-200: #c5d3d2;
+  --color-deep-teal-300: #a9bcbb;
+  --color-deep-teal-400: #8ca6a4;
+  --color-deep-teal-500: #6f908e;
+  --color-deep-teal-600: #597371;
+  --color-deep-teal-700: #435655;
+  --color-deep-teal-800: #2c3a39;
+  --color-deep-teal-900: #161d1c;
+  --color-deep-teal-950: #101414;
+
+  --color-charcoal-50: #f2f2f3;
+  --color-charcoal-100: #e4e4e7;
+  --color-charcoal-200: #c9c9cf;
+  --color-charcoal-300: #afafb6;
+  --color-charcoal-400: #94949e;
+  --color-charcoal-500: #797986;
+  --color-charcoal-600: #61616b;
+  --color-charcoal-700: #494950;
+  --color-charcoal-800: #303036;
+  --color-charcoal-900: #18181b;
+  --color-charcoal-950: #111113;
+
+  --color-sunflower-gold-50: #fff6e5;
+  --color-sunflower-gold-100: #ffedcc;
+  --color-sunflower-gold-200: #ffdb99;
+  --color-sunflower-gold-300: #ffc966;
+  --color-sunflower-gold-400: #ffb833;
+  --color-sunflower-gold-500: #ffa600;
+  --color-sunflower-gold-600: #cc8500;
+  --color-sunflower-gold-700: #996300;
+  --color-sunflower-gold-800: #664200;
+  --color-sunflower-gold-900: #332100;
+  --color-sunflower-gold-950: #241700;
+}
+
 :root {
-  --background: rgba(225, 193, 145, 0.88);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Ytor: ljus, kall gråton bakom, vita kort ovanpå */
+  --background: #f1f4f4;          /* deep-teal-50 */
+  --foreground: #18181b;          /* charcoal-900 */
+  --card: #ffffff;
+  --card-foreground: #18181b;     /* charcoal-900 */
+  --popover: #ffffff;
+  --popover-foreground: #18181b;  /* charcoal-900 */
+
+  /* Huvudfärg: knappar och viktiga handlingar (6.5:1 mot vit text) */
+  --primary: #316a2f;             /* willow-green-700 */
+  --primary-foreground: #ffffff;
+
+  /* Sekundära ytor och dämpad text */
+  --secondary: #e2e9e8;           /* deep-teal-100 */
+  --secondary-foreground: #18181b;/* charcoal-900 */
+  --muted: #e2e9e8;               /* deep-teal-100 */
+  --muted-foreground: #61616b;    /* charcoal-600 (6.1:1 mot vitt) */
+  --accent: #eef7ed;              /* willow-green-50: hover på ghost-knappar, valt alternativ */
+  --accent-foreground: #20471f;   /* willow-green-800 */
+
+  /* Fel ska vara rött, inte en av varumärkesfärgerna */
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+
+  /* Kanter: diskreta på kort, tydligare på fält (formfält bör ha 3:1 mot bakgrunden) */
+  --border: #c5d3d2;              /* deep-teal-200 */
+  --input: #6f908e;               /* deep-teal-500 */
+  --ring: #51b14e;                /* willow-green-500: fokusmarkering */
+
+  --chart-1: #316a2f;             /* willow-green-700 */
+  --chart-2: #ffa600;             /* sunflower-gold-500 */
+  --chart-3: #597371;             /* deep-teal-600 */
+  --chart-4: #74c171;             /* willow-green-400 */
+  --chart-5: #ffc966;             /* sunflower-gold-300 */
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #18181b;
+  --sidebar-primary: #316a2f;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef7ed;
+  --sidebar-accent-foreground: #20471f;
+  --sidebar-border: #c5d3d2;
+  --sidebar-ring: #51b14e;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: #111113;          /* charcoal-950 */
+  --foreground: #e4e4e7;          /* charcoal-100 */
+  --card: #18181b;                /* charcoal-900 */
+  --card-foreground: #e4e4e7;
+  --popover: #18181b;
+  --popover-foreground: #e4e4e7;
+  --primary: #74c171;             /* willow-green-400: ljusare grön syns bättre på mörkt */
+  --primary-foreground: #102310;  /* willow-green-900 */
+  --secondary: #303036;           /* charcoal-800 */
+  --secondary-foreground: #e4e4e7;
+  --muted: #303036;               /* charcoal-800 */
+  --muted-foreground: #94949e;    /* charcoal-400 */
+  --accent: #20471f;              /* willow-green-800 */
+  --accent-foreground: #dcefdc;   /* willow-green-100 */
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: #303036;              /* charcoal-800 */
+  --input: #494950;               /* charcoal-700 */
+  --ring: #51b14e;                /* willow-green-500 */
+  --chart-1: #74c171;
+  --chart-2: #ffb833;
+  --chart-3: #8ca6a4;
+  --chart-4: #418e3e;
+  --chart-5: #ffdb99;
+  --sidebar: #18181b;
+  --sidebar-foreground: #e4e4e7;
+  --sidebar-primary: #74c171;
+  --sidebar-primary-foreground: #102310;
+  --sidebar-accent: #20471f;
+  --sidebar-accent-foreground: #dcefdc;
+  --sidebar-border: #303036;
+  --sidebar-ring: #51b14e;
 }
 
 @layer base {
