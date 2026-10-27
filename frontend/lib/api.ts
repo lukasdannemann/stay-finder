@@ -1,6 +1,6 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-function getApiBaseUrl(): string {
+export function getApiBaseUrl(): string {
   if (!API_BASE_URL) {
     throw new Error("Missing NEXT_PUBLIC_API_BASE_URL");
   }

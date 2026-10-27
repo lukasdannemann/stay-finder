@@ -26,7 +26,7 @@ auth.post("/login", authValidator, async (c) => {
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
-    return c.json({ error: "Invalid email or password" }, 401);
+    return c.json({ error: "Fel email eller lösenord" }, 401);
   }
 
   return c.json({ user: data.user });
