@@ -1,5 +1,12 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+export function getErrorMessage(body: ApiError, fallback: string): string {
+  if (body.errors?.length) {
+    return body.errors.map(([, message]) => message).join(", ");
+  }
+  return body.error ?? fallback;
+}
+
 export function getApiBaseUrl(): string {
   if (!API_BASE_URL) {
     throw new Error("Missing NEXT_PUBLIC_API_BASE_URL");
@@ -46,6 +53,26 @@ export async function getPropertyById(id: string): Promise<Property | null> {
   }
 
   return response.json();
+}
+
+// POST
+
+export async function createProperty(input: NewProperty): Promise<Property> {
+  const response = await fetch(`${getApiBaseUrl()}/properties`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    credentials: 'include',
+    body: JSON.stringify(input)
+  })
+
+  const body = await response.json()
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(body as ApiError, 'Kunde inte skapa boendet'))
+  }
+
+  return body as Property
+
 }
 
 

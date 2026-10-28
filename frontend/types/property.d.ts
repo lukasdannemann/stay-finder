@@ -1,7 +1,6 @@
 type PropertyKind = "apartment" | "house" | "cabin";
 
-interface Property {
-  property_id: string;
+type NewProperty = {
   title: string;
   description: string;
   location: string;
@@ -9,9 +8,13 @@ interface Property {
   max_guests: number;
   kind: PropertyKind;
   image_url: string | null;
+};
+type Property = NewProperty & {
+  property_id: string;
   user_id: string | null;
   created_at: string;
 }
+
 
 type PaginatedListResponse<T> = {
   data: T[];

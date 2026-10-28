@@ -49,7 +49,6 @@
 }
 
 
-/* Färgpalett: gör klasser som bg-willow-green-50 och text-sunflower-gold-800 tillgängliga */
 @theme {
   --color-frosted-mint-50: #e9fde7;
   --color-frosted-mint-100: #d4fccf;
@@ -113,7 +112,7 @@
 }
 
 :root {
-  /* Ytor: ljus, kall gråton bakom, vita kort ovanpå */
+  /* Ytor: ljus, kall gråton bakom, vita kort ovanpå */ 
   --background: #f1f4f4;          /* deep-teal-50 */
   --foreground: #18181b;          /* charcoal-900 */
   --card: #ffffff;

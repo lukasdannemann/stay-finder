@@ -1,11 +1,5 @@
-import {getApiBaseUrl} from '@/lib/api'
+import {getApiBaseUrl, getErrorMessage} from '@/lib/api'
 
-function getErrorMessage(body: ApiError, fallback: string): string {
-  if (body.errors?.length) {
-    return body.errors.map(([, message]) => message).join(", ");
-  }
-  return body.error ?? fallback;
-}
 
 async function sendAuthRequest(path: string, credentials: AuthCredentials): Promise<AuthUser> {
   const response = await fetch(`${getApiBaseUrl()}${path}`, {
