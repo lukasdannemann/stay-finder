@@ -14,7 +14,7 @@ const propertyQuerySchema = z.object({
     .trim()
     .min(1)
     .max(80)
-    .regex(/^[\p{L}\p{N}\s-]+$/u, "Search contains invalid characters")
+    .regex(/^[\p{L}\p{N}\s-]+$/u, "Sökningen innehåller ogiltiga tecken")
     .optional(),
   sort_by: z
     .enum(["title", "location", "price_per_night", "created_at"])
