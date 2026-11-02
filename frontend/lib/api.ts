@@ -72,7 +72,25 @@ export async function createProperty(input: NewProperty): Promise<Property> {
   }
 
   return body as Property
+}
 
+// BOOKINGS
+
+export async function createBooking(propertyId: string, input: NewBooking): Promise<Booking> {
+  const response = await fetch(`${getApiBaseUrl()}/bookings/properties/${propertyId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(input),
+  });
+
+  const body = await response.json();
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(body as ApiError, "Kunde inte skapa bokningen"));
+  }
+
+  return body as Booking;
 }
 
 

@@ -2,8 +2,18 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { MenuIcon } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { Button, buttonVariants } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
   const { user, isLoading, logout } = useAuth();
@@ -21,25 +31,66 @@ export default function Navbar() {
           StayFinder
         </Link>
 
-        {isLoading ? null : user ? (
-          <div className="flex items-center gap-2">
-            <span className="hidden text-sm text-muted-foreground sm:inline">{user.email}</span>
-            <Link href="/properties/new" className={buttonVariants({ variant: "ghost" })}>
-              Lägg till boende
-            </Link>
-            <Button variant="outline" onClick={handleLogout}>
-              Logga ut
-            </Button>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Link href="/login" className={buttonVariants({ variant: "ghost" })}>
-              Logga in
-            </Link>
-            <Link href="/register" className={buttonVariants()}>
-              Skapa konto
-            </Link>
-          </div>
+        {isLoading ? null : (
+          <>
+            <div className="hidden items-center gap-2 sm:flex">
+              {user ? (
+                <>
+                  <span className="text-sm text-muted-foreground">{user.email}</span>
+                  <Link href="/properties/new" className={buttonVariants({ variant: "ghost" })}>
+                    Lägg till boende
+                  </Link>
+                  <Button variant="outline" onClick={handleLogout}>
+                    Logga ut
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className={buttonVariants({ variant: "ghost" })}>
+                    Logga in
+                  </Link>
+                  <Link href="/register" className={buttonVariants()}>
+                    Skapa konto
+                  </Link>
+                </>
+              )}
+            </div>
+
+            <div className="sm:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  className={buttonVariants({ variant: "outline", size: "icon" })}
+                  aria-label="Öppna meny"
+                >
+                  <MenuIcon />
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end" className="w-56">
+                  {user ? (
+                    <>
+                      <DropdownMenuGroup>
+                        <DropdownMenuLabel className="truncate">{user.email}</DropdownMenuLabel>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => router.push("/properties/new")}>
+                        Lägg till boende
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout}>Logga ut</DropdownMenuItem>
+                    </>
+                  ) : (
+                    <>
+                      <DropdownMenuItem onClick={() => router.push("/login")}>
+                        Logga in
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => router.push("/register")}>
+                        Skapa konto
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </>
         )}
       </nav>
     </header>
