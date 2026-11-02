@@ -6,6 +6,8 @@ import type { User } from "@supabase/supabase-js";
 import { env } from "../env.js";
 import { supabaseKey, supabaseUrl } from "../lib/supabase.js";
 import type { AppSupabaseClient } from "../types/supabase.js";
+import type { Database } from "../types/database.types.js";
+
 
 declare module "hono" {
   interface ContextVariableMap {
@@ -15,7 +17,7 @@ declare module "hono" {
 }
 
 function createSupabaseForRequest(c: Context) {
-  return createServerClient(supabaseUrl, supabaseKey, {
+  return createServerClient<Database>(supabaseUrl, supabaseKey, {
     cookies: {
       getAll() {
         const cookies = getCookie(c);

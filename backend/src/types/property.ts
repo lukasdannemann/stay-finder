@@ -1,21 +1,12 @@
 export const PROPERTY_KINDS = ["apartment", "house", "cabin"] as const;
 export type PropertyKind = (typeof PROPERTY_KINDS)[number];
+import type { Database } from "./database.types.js";
 
+type PropertyTable = Database["public"]["Tables"]["properties"];
 
-export interface NewProperty {
-  title: string;
-  description: string;
-  location: string;
-  price_per_night: number;
-  kind: PropertyKind;
-  max_guests?: number;
-  image_url?: string | null;
-}
+export type Property = PropertyTable["Row"];
 
-export interface Property extends NewProperty {
- property_id: string;
- created_at: string;
-}
+export type NewProperty = Omit<PropertyTable["Insert"], "property_id" | "created_at" | "user_id">;
 
 export type PropertySortBy =
   | "title"

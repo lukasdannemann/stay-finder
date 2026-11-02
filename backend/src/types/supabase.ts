@@ -1,4 +1,4 @@
 import type { createServerClient } from "@supabase/ssr";
+import type { Database } from "./database.types.js";
 
-// "den typ som createServerClient returnerar"
-export type AppSupabaseClient = ReturnType<typeof createServerClient>;
+export type AppSupabaseClient = ReturnType<typeof createServerClient<Database>>;
