@@ -2,6 +2,7 @@
 
 import { useState, type SubmitEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { createBooking } from "@/lib/api";
 import { countNights } from "@/lib/booking";
@@ -16,10 +17,10 @@ type BookingFormProps = {
 
 export default function BookingForm({ property }: BookingFormProps) {
   const { user, isLoading } = useAuth();
+  const router = useRouter();
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
   const nights = countNights(checkIn, checkOut);
@@ -27,8 +28,7 @@ export default function BookingForm({ property }: BookingFormProps) {
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
+    const formData = new FormData(event.currentTarget);
 
     const input: NewBooking = {
       guest_name: String(formData.get("guest_name")),
@@ -39,18 +39,13 @@ export default function BookingForm({ property }: BookingFormProps) {
     };
 
     setError(null);
-    setIsSuccess(false);
     setIsPending(true);
 
     try {
       await createBooking(property.property_id, input);
-      setIsSuccess(true);
-      form.reset();
-      setCheckIn("");
-      setCheckOut("");
+      router.push("/bookings");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Kunde inte skapa bokningen");
-    } finally {
       setIsPending(false);
     }
   }
@@ -133,7 +128,7 @@ export default function BookingForm({ property }: BookingFormProps) {
             <div className="space-y-1 border-t pt-4 text-sm">
               <div className="flex justify-between text-muted-foreground">
                 <span>
-                  {property.price_per_night.toLocaleString("sv-SE")} kr x {nights}{" "}
+                  {property.price_per_night.toLocaleString("sv-SE")} kr × {nights}{" "}
                   {nights === 1 ? "natt" : "nätter"}
                 </span>
                 <span>{total.toLocaleString("sv-SE")} kr</span>
@@ -146,7 +141,6 @@ export default function BookingForm({ property }: BookingFormProps) {
           )}
 
           {error && <p className="text-sm text-destructive">{error}</p>}
-          {isSuccess && <p className="text-sm text-primary">Bokningen är skapad!</p>}
 
           <Button type="submit" disabled={isPending}>
             {isPending ? "Bokar…" : "Boka"}

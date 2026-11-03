@@ -11,6 +11,22 @@ import {
 
 const bookings = new Hono();
 
+// GET /bookings (all bookings for current user)
+bookings.get("/", requireAuth, async (c) => {
+  const user = c.get("user");
+
+  if (!user) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+
+  try {
+    const result = await db.getBookingsForUser(c.get("supabase"), user.id);
+    return c.json(result);
+  } catch (error) {
+    return c.json({ error: "Failed to fetch bookings" }, 500);
+  }
+});
+
 // GET bookings for a property
 
 bookings.get("/properties/:propertyId", requireAuth, propertyIdParamValidator, async (c) => {

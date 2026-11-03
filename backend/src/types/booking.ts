@@ -1,4 +1,5 @@
 import type { Database } from "./database.types.js";
+import type { Property } from "./property.js";
 
 type BookingTable = Database["public"]["Tables"]["bookings"];
 
@@ -13,3 +14,6 @@ export type NewBooking = Omit<
   BookingTable["Insert"],
   "booking_id" | "created_at" | "user_id" | "property_id" | "status"
 >;
+export type BookingWithProperty = Booking & {
+  properties: Pick<Property, "title" | "location" | "image_url"> | null;
+};

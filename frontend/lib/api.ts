@@ -93,4 +93,29 @@ export async function createBooking(propertyId: string, input: NewBooking): Prom
   return body as Booking;
 }
 
+export async function getMyBookings(): Promise<BookingWithProperty[]> {
+  const response = await fetch(`${getApiBaseUrl()}/bookings`, {
+    credentials: "include",
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Kunde inte hämta bokningarna");
+  }
+
+  return response.json();
+}
+
+export async function deleteBooking(id: string): Promise<void> {
+  const response = await fetch(`${getApiBaseUrl()}/bookings/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    const body = await response.json();
+    throw new Error(getErrorMessage(body as ApiError, "Kunde inte ta bort bokningen"));
+  }
+}
+
 

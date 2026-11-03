@@ -3,3 +3,9 @@ export const KIND_LABELS: Record<PropertyKind, string> = {
   house: "Hus",
   cabin: "Stuga",
 };
+
+export const STATUS_LABELS: Record<BookingStatus, string> = {
+  pending: "Väntar",
+  confirmed: "Bekräftad",
+  cancelled: "Avbokad",
+};

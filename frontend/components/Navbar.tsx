@@ -36,17 +36,31 @@ export default function Navbar() {
             <div className="hidden items-center gap-2 sm:flex">
               {user ? (
                 <>
-                  <span className="text-sm text-muted-foreground">{user.email}</span>
-                  <Link href="/properties/new" className={buttonVariants({ variant: "ghost" })}>
+                  <Link
+                    href="/bookings"
+                    className={buttonVariants({ variant: "ghost" })}
+                  >
+                    Mina bokningar
+                  </Link>
+                  <Link
+                    href="/properties/new"
+                    className={buttonVariants({ variant: "ghost" })}
+                  >
                     Lägg till boende
                   </Link>
+                  <span className="text-sm text-muted-foreground">
+                    {user.email}
+                  </span>
                   <Button variant="outline" onClick={handleLogout}>
                     Logga ut
                   </Button>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className={buttonVariants({ variant: "ghost" })}>
+                  <Link
+                    href="/login"
+                    className={buttonVariants({ variant: "ghost" })}
+                  >
                     Logga in
                   </Link>
                   <Link href="/register" className={buttonVariants()}>
@@ -59,7 +73,10 @@ export default function Navbar() {
             <div className="sm:hidden">
               <DropdownMenu>
                 <DropdownMenuTrigger
-                  className={buttonVariants({ variant: "outline", size: "icon" })}
+                  className={buttonVariants({
+                    variant: "outline",
+                    size: "icon",
+                  })}
                   aria-label="Öppna meny"
                 >
                   <MenuIcon />
@@ -69,20 +86,33 @@ export default function Navbar() {
                   {user ? (
                     <>
                       <DropdownMenuGroup>
-                        <DropdownMenuLabel className="truncate">{user.email}</DropdownMenuLabel>
+                        <DropdownMenuLabel className="truncate">
+                          {user.email}
+                        </DropdownMenuLabel>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => router.push("/properties/new")}>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/bookings")}
+                      >
+                        Mina bokningar
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/properties/new")}
+                      >
                         Lägg till boende
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={handleLogout}>Logga ut</DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout}>
+                        Logga ut
+                      </DropdownMenuItem>
                     </>
                   ) : (
                     <>
                       <DropdownMenuItem onClick={() => router.push("/login")}>
                         Logga in
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => router.push("/register")}>
+                      <DropdownMenuItem
+                        onClick={() => router.push("/register")}
+                      >
                         Skapa konto
                       </DropdownMenuItem>
                     </>

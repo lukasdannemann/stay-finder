@@ -20,3 +20,14 @@ type NewBooking = {
   check_out: string;
   guests: number;
 };
+type BookingWithProperty = Booking & {
+  properties: {
+    title: string;
+    location: string;
+    image_url: string | null;
+  } | null;
+};
+
+type BookingUpdate = NewBooking & {
+  status: BookingStatus;
+};

@@ -1,5 +1,5 @@
 import type { AppSupabaseClient } from "../types/supabase.js";
-import type { Booking, BookingUpdate, NewBooking } from "../types/booking.js";
+import type { Booking, BookingUpdate, BookingWithProperty, NewBooking } from "../types/booking.js";
 
 export async function getBookingsForProperty(
   supabase: AppSupabaseClient,
@@ -65,6 +65,23 @@ export async function deleteBooking(
     .eq("booking_id", id)
     .select()
     .maybeSingle();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}
+
+export async function getBookingsForUser(
+  supabase: AppSupabaseClient,
+  userId: string,
+): Promise<BookingWithProperty[]> {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*, properties(title, location, image_url)")
+    .eq("user_id", userId)
+    .order("check_in", { ascending: true });
 
   if (error) {
     throw new Error(error.message);
