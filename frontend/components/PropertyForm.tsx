@@ -92,7 +92,7 @@ export default function PropertyForm() {
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="price_per_night">Pris per natt (kr)</Label>
-          <Input id="price_per_night" name="price_per_night" type="number" min={0} required />
+          <Input id="price_per_night" name="price_per_night" type="number" min={1} required />
         </div>
 
         <div className="flex flex-col gap-2">
