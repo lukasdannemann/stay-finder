@@ -15,5 +15,5 @@ export type NewBooking = Omit<
   "booking_id" | "created_at" | "user_id" | "property_id" | "status"
 >;
 export type BookingWithProperty = Booking & {
-  properties: Pick<Property, "title" | "location" | "image_url"> | null;
+  properties: Pick<Property, "title" | "location" | "image_url" | "price_per_night"> | null;
 };

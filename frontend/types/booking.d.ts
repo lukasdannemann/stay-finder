@@ -25,6 +25,7 @@ type BookingWithProperty = Booking & {
     title: string;
     location: string;
     image_url: string | null;
+    price_per_night: number;
   } | null;
 };
 

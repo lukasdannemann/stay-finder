@@ -118,4 +118,21 @@ export async function deleteBooking(id: string): Promise<void> {
   }
 }
 
+export async function updateBooking(id: string, input: BookingUpdate): Promise<Booking> {
+  const response = await fetch(`${getApiBaseUrl()}/bookings/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(input),
+  });
+
+  const body = await response.json();
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(body as ApiError, "Kunde inte ändra bokningen"));
+  }
+
+  return body as Booking;
+}
+
 

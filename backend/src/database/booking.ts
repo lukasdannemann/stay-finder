@@ -79,7 +79,7 @@ export async function getBookingsForUser(
 ): Promise<BookingWithProperty[]> {
   const { data, error } = await supabase
     .from("bookings")
-    .select("*, properties(title, location, image_url)")
+    .select("*, properties(title, location, image_url, price_per_night)")
     .eq("user_id", userId)
     .order("check_in", { ascending: true });
 
