@@ -25,6 +25,7 @@ export default function BookingForm({ property }: BookingFormProps) {
 
   const nights = countNights(checkIn, checkOut);
   const total = nights * property.price_per_night;
+  const today = new Date().toLocaleDateString("sv-SE");
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -92,6 +93,7 @@ export default function BookingForm({ property }: BookingFormProps) {
                 id="check_in"
                 type="date"
                 value={checkIn}
+                min={today}
                 onChange={(e) => setCheckIn(e.target.value)}
                 required
               />
